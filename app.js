@@ -8,8 +8,8 @@ const PORT = 3001;
 
 app.use(express.json());
 
-app.use("/api", taskRouter);
-app.use("/api", userRouter);
+app.use("/api/tasks", taskRouter);
+app.use("/api/users", userRouter);
 
 app.listen(PORT, async () => {
     await startDB();

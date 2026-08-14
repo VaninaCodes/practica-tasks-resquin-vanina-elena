@@ -2,7 +2,7 @@ import { taskModel } from "../models/task.model.js";
 
 export const getAllTask = async (req, res) => {
     try{
-        const task = await TaskController.findAll();
+        const task = await taskModel.findAll();
 
         return res.status(200).json(task);
     }
@@ -14,7 +14,7 @@ export const getAllTask = async (req, res) => {
 
 export const getTaskById = async (req, res) => {
     try{
-        const task = await TaskController.findByPk(req.params.id);
+        const task = await taskModel.findByPk(req.params.id);
         //validacion
         if (task) res.json(task);
         else res.status(404).json({message: "Tarea no encontrada"});
@@ -32,13 +32,13 @@ export const createTask = async (req, res) => {
         if (!title || !description){
             return res.status.json({message: "Debe completar los campos titulo y descripcion"})
         }
-        const newTask = await Task.create({
+        const newTask = await taskModel.create({
             title,
             description,
             isComplete,
         });
 
-        res.status(201).json({message: "Tarea creada!", task});
+        res.status(201).json({message: "Tarea creada!", task: newTask});
     }
     catch(error){
         console.log(error);
@@ -48,12 +48,12 @@ export const createTask = async (req, res) => {
 
 export const updateTask = async (req, res) => {
     try{
-        const updated = await Task.update(req.body, {
+        const updated = await taskModel.update(req.body, {
             where: { id: req.params.id},
         });
         //validaciones
         if (updated){
-            const updateTask = await Task.findByPk(req.params.id);
+            const updateTask = await taskModel.findByPk(req.params.id);
             res.json(updateTask);
         }
         else{
@@ -67,7 +67,7 @@ export const updateTask = async (req, res) => {
 
 export const deleteTask = async (req, res) => {
     try{
-        const deleted = await Task.destroy({where: { id: req.params.id}});
+        const deleted = await taskModel.destroy({where: { id: req.params.id}});
        //validacion
        if (deleted) res.json({message: "Tarea eliminada!"});
        else res.status(404).json({message: "Tarea no encontrada"});
