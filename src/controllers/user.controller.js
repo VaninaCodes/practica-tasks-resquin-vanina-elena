@@ -1,8 +1,16 @@
 import { userModel } from "../models/user.model.js";
+import { taskModel } from "../models/task.model.js";
+import { perfilModel } from "../models/perfil.model.js";
 
 export const getAllUsers = async (req, res) => {
     try{
-        const user = await userModel.findAll();
+        const user = await userModel.findAll({
+            include: { 
+                model: taskModel, 
+                as: "tasks", 
+                attributes: ["id", "title", "description", "isComplete"] 
+            }
+        });
 
         return res.status(200).json(user);
     }
@@ -14,7 +22,12 @@ export const getAllUsers = async (req, res) => {
 
 export const getUserById = async (req, res) => {
     try{
-        const user = await userModel.findByPk(req.params.id);
+        const user = await userModel.findByPk(req.params.id, {
+            include: { 
+                model: taskModel, 
+                as: "tasks", 
+                attributes: ["id", "title", "description", "isComplete"] }
+        });
         //validacion
         if (user) res.json(user);
         else res.status(404).json({message: "User no encontrado"});
