@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../config/database.js";
+import { userModel } from "./user.model.js";
 
 export const taskModel = sequelize.define( "Task", {
     title: {
@@ -16,3 +17,10 @@ export const taskModel = sequelize.define( "Task", {
         default: false, 
     }
 });
+
+// relacion tarea-usuario
+// una tarea pertenece a un usuario
+taskModel.belongsTo(userModel, { foreignKey:"user_id", as: "user"});
+
+// un usuario puede tener muchas tareas
+userModel.hasMany(taskModel, {foreignKey:"user_id", as: "tasks"});
