@@ -3,6 +3,10 @@ import { startDB } from "./src/config/database.js";
 import { taskRouter } from "./src/routes/task.routes.js";
 import { userRouter } from "./src/routes/user.routes.js";
 
+// pruebas
+import { taskModel } from "./src/models/task.model.js";
+import { userRoleModel } from "./src/models/user_role.model.js";
+
 const app = express();
 const PORT = 3001;
 
