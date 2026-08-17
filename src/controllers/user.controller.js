@@ -1,8 +1,16 @@
 import { userModel } from "../models/user.model.js";
+import { taskModel } from "../models/task.model.js";
+import { perfilModel } from "../models/perfil.model.js";
 
 export const getAllUsers = async (req, res) => {
     try{
-        const user = await User.findAll();
+        const user = await userModel.findAll({
+            include: { 
+                model: taskModel, 
+                as: "tasks", 
+                attributes: ["id", "title", "description", "isComplete"] 
+            }
+        });
 
         return res.status(200).json(user);
     }
@@ -14,7 +22,12 @@ export const getAllUsers = async (req, res) => {
 
 export const getUserById = async (req, res) => {
     try{
-        const user = await User.findByPk(req.params.id);
+        const user = await userModel.findByPk(req.params.id, {
+            include: { 
+                model: taskModel, 
+                as: "tasks", 
+                attributes: ["id", "title", "description", "isComplete"] }
+        });
         //validacion
         if (user) res.json(user);
         else res.status(404).json({message: "User no encontrado"});
@@ -30,15 +43,15 @@ export const createUser = async (req, res) => {
         const { name, email, password } = req.body;
         // validacion
         if (!name || !email || !password){
-            return res.status.json({message: "Debe completar todos los campos"})
+            return res.status(400).json({message: "Debe completar todos los campos"})
         }
-        const newUser = await User.create({
+        const newUser = await userModel.create({
             name,
             email,
             password,
         });
 
-        res.status(201).json({message: "User creado!", user});
+        res.status(201).json({message: "User creado!", newUser});
     }
     catch(error){
         console.log(error);
@@ -48,12 +61,12 @@ export const createUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try{
-        const updated = await User.update(req.body, {
+        const updated = await userModel.update(req.body, {
             where: { id: req.params.id},
         });
         //validaciones
         if (updated){
-            const updateUser = await User.findByPk(req.params.id);
+            const updateUser = await userModel.findByPk(req.params.id);
             res.json(updateUser);
         }
         else{
@@ -67,7 +80,7 @@ export const updateUser = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
     try{
-        const deleted = await User.destroy({where: { id: req.params.id}});
+        const deleted = await userModel.destroy({where: { id: req.params.id}});
        //validacion
        if (deleted) res.json({message: "User eliminado!"});
        else res.status(404).json({message: "User no encontrado"});
