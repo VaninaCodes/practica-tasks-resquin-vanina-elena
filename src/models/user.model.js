@@ -15,7 +15,15 @@ export const userModel = sequelize.define( "User", {
     password: {
         type: DataTypes.STRING(100),
         allowNull: false, 
-    }
+    },
+    perfil_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: "Users",
+            key: "id",
+        },
+    },
 });
 
 // relacion uno a uno

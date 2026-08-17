@@ -27,7 +27,7 @@ export const getTaskById = async (req, res) => {
 
 export const createTask = async (req, res) => {
     try{
-        const { title, description, isComplete } = req.body;
+        const { title, description, user_id } = req.body;
         // validacion
         if (!title || !description){
             return res.status.json({message: "Debe completar los campos titulo y descripcion"})
@@ -35,7 +35,7 @@ export const createTask = async (req, res) => {
         const newTask = await taskModel.create({
             title,
             description,
-            isComplete,
+            user_id,
         });
 
         res.status(201).json({message: "Tarea creada!", task: newTask});

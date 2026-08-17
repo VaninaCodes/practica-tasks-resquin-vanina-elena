@@ -15,7 +15,15 @@ export const taskModel = sequelize.define( "Task", {
     isComplete: {
         type: DataTypes.BOOLEAN,
         default: false, 
-    }
+    },
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: "Users",
+            key: "id",
+        },
+    },
 });
 
 // relacion tarea-usuario
