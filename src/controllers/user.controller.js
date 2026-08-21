@@ -45,10 +45,16 @@ export const createUser = async (req, res) => {
         if (!name || !email || !password){
             return res.status(400).json({message: "Debe completar todos los campos"})
         }
+        // validacion para no crear usuario con un perfil inexistente
+        const perfilExists = await perfilModel.findByPk(perfil_id);
+        if(!perfilExists){
+            return res.status(404).json({message: "No se puede crear el usuario: el perfil no existe"})
+        }
         const newUser = await userModel.create({
             name,
             email,
             password,
+            perfil_id,
         });
 
         res.status(201).json({message: "User creado!", newUser});
