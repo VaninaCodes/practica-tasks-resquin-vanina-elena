@@ -12,7 +12,7 @@ import{
     createRoleValidation,
     updateRoleValidation,
 } from "../middlewares/validations/role.validation.js";
-import { validate } from "../middlewares/validation.middleware.js";
+import { validate } from "../middlewares/validate.js";
 
 export const roleRouter = Router();
 

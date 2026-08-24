@@ -1,5 +1,5 @@
 import {body, param } from "express-validator";
-import {perfilModel} from "../models/perfil.model.js";
+import {perfilModel} from "../../models/perfil.model.js";
 
 // valido el id
 export const perfilIdValidation = [

@@ -1,5 +1,5 @@
 import {body, param } from "express-validator";
-import {roleModel} from "../models/role.model.js";
+import {roleModel} from "../../models/role.model.js";
 
 export const roleIdValidation = [
     param("id")
@@ -11,7 +11,7 @@ export const roleIdValidation = [
     }),
 ]; 
 
-export const createPerfilValidation = [
+export const createRoleValidation = [
     body("rolename")
         .notEmpty().withMessage("El rolename no debe ser vacio")
         .isLength({min:2, max:100}).withMessage("Los caracteres del rolename deben ser 2 minimo y 100 maximo")
@@ -29,7 +29,7 @@ export const createPerfilValidation = [
         }),
 ];
 
-export const updatePerfilValidation = [
+export const updateRoleValidation = [
     body("rolename")
         .optional()
         .notEmpty().withMessage("El rolename no debe ser vacio")

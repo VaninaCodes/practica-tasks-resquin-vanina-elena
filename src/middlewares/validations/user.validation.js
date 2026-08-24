@@ -1,12 +1,12 @@
 import {body, param} from "express-validator";
-import {userModel} from "..models/user.model.js";
-import {perfilModel} from "../models/perfil.model.js";
+import {userModel} from "../../models/user.model.js";
+import {perfilModel} from "../../models/perfil.model.js";
 
 export const userIdValidation = [
     param("id")
     .isInt({min: 1}).withMessage("El id debe ser un numero rntero positivo")
     .custom(async(id)=> {
-        const role = await roleModel.findByPk(id);
+        const role = await userModel.findByPk(id);
         if (!role) throw new Error("El usuario no existe");
         return true;
     }),

@@ -11,8 +11,8 @@ import{
     taskIdValidation,
     createTaskValidation,
     updateTaskValidation,
-} from "../middlewares/validations/task.validation.js";
-import { validate } from "../middlewares/validation.middleware.js";
+} from "../middlewares/validations/task.validator.js";
+import { validate } from "../middlewares/validate.js";
 
 export const taskRouter = Router();
 
