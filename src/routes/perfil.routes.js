@@ -7,10 +7,16 @@ import {
     deletePerfil,
 } from "../controllers/perfil.controller.js";
 
+import{
+    perfilIdValidation,
+    createPerfilValidation,
+    updatePerfilValidation,
+} from "../middlewares/validations/perfil.validation.js";
+import { validate } from "../middlewares/validation.middleware.js";
 export const perfilRouter = Router();
 
 perfilRouter.get("/", getAllPerfiles);
-perfilRouter.get("/:id", getPerfilById);
-perfilRouter.post("/", createPerfil);
-perfilRouter.put("/:id", updatePerfil);
-perfilRouter.delete("/:id", deletePerfil);
+perfilRouter.get("/:id", perfilIdValidation, validate, getPerfilById);
+perfilRouter.post("/", createPerfilValidation, validate, createPerfil);
+perfilRouter.put("/:id", perfilIdValidation, updatePerfilValidation, validate, updatePerfil);
+perfilRouter.delete("/:id", perfilIdValidation, validate, deletePerfil);
