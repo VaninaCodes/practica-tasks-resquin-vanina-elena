@@ -31,13 +31,6 @@ export const getRoleById = async (req, res) => {
 export const createRole = async (req, res) => {
     try{
         const { rolename } = req.body;
-        if (!rolename){
-            return res.status(400).json({message: "Debe completar el campo rolename"});
-        }
-        const existe = await roleModel.findOne({ where: { rolename } });
-        if (existe){
-            return res.status(400).json({message: "Ese rol ya existe"});
-        }
         const newRole = await roleModel.create({ rolename });
         res.status(201).json({message: "Rol creado!", role: newRole});
     }

@@ -40,23 +40,15 @@ export const getUserById = async (req, res) => {
 
 export const createUser = async (req, res) => {
     try{
-        const { name, email, password } = req.body;
-        // // validacion
-        // if (!name || !email || !password){
-        //     return res.status(400).json({message: "Debe completar todos los campos"})
-        // }
-        // // validacion para no crear usuario con un perfil inexistente
-        // const perfilExists = await perfilModel.findByPk(perfil_id);
-        // if(!perfilExists){
-        //     return res.status(404).json({message: "No se puede crear el usuario: el perfil no existe"})
-        // }
-        const user = await userModel.create({
+        const { name, email, password, perfil_id } = req.body;
+        const newUser = await userModel.create({
             name,
             email,
-            password
+            password,
+            perfil_id 
         });
 
-        return res.status(201).json({message: "User creado!", user});
+        return res.status(201).json({message: "User creado!", user:newUser});
     }
     catch(error){
         console.log(error);
