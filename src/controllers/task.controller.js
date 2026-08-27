@@ -11,9 +11,9 @@ export const getAllTask = async (req, res) => {
             include: [ 
                 {
                     model: userModel, 
-                    as: "author", 
+                    as: "user", 
                     attributes: {
-                        exclude:[password],
+                        exclude:["password"],
                     },
                 include: [
                     {
@@ -42,9 +42,9 @@ export const getTaskById = async (req, res) => {
             include: [ 
                 {
                     model: userModel, 
-                    as: "author", 
+                    as: "user", 
                     attributes: {
-                        exclude:[password],
+                        exclude:["password"],
                     },
                 include: [
                     {
@@ -68,17 +68,6 @@ export const getTaskById = async (req, res) => {
 export const createTask = async (req, res) => {
     try{
         const { title, description, user_id } = req.body;
-        // validacion
-        if (!title || !description || !user_id){
-            return res.status(404).json({message: "Debe completar los campos titulo y descripcion"})
-        }
-        
-        // validacion para no crear tarea sin usuario
-        const userExists = await userModel.findByPk(user_id);
-        if(!userExists){
-            return res.status(404).json({message: "No se puede crear la tarea: el usuario no existe"})
-        }
-
         const newTask = await taskModel.create({
             title,
             description,

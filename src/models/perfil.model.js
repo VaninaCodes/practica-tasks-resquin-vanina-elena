@@ -10,8 +10,7 @@ export const perfilModel = sequelize.define(
         },
         username: {
             type: DataTypes.STRING(100),
-            allowNull: false,
-            unique: true,
+            allowNull: false
         }
     }
 )

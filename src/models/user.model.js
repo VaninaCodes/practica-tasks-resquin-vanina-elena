@@ -19,6 +19,7 @@ export const userModel = sequelize.define( "User", {
     perfil_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        unique: true,
         references: {
             model: "Perfils",
             key: "id",

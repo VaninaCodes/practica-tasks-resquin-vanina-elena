@@ -40,22 +40,19 @@ export const getUserById = async (req, res) => {
 
 export const createUser = async (req, res) => {
     try{
-        const { name, email, password } = req.body;
-        // validacion
-        if (!name || !email || !password){
-            return res.status(400).json({message: "Debe completar todos los campos"})
-        }
+        const { name, email, password, perfil_id } = req.body;
         const newUser = await userModel.create({
             name,
             email,
             password,
+            perfil_id 
         });
 
-        res.status(201).json({message: "User creado!", newUser});
+        return res.status(201).json({message: "User creado!", user:newUser});
     }
     catch(error){
         console.log(error);
-        res.status(500).json({message: "Error interno del servidor"});
+        return res.status(500).json({message: "Error interno del servidor"});
     }
 };
 

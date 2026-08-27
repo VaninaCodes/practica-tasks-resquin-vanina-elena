@@ -19,8 +19,6 @@ export const getPerfilById = async (req, res) => {
         const perfil = await perfilModel.findByPk(req.params.id, {
             include: { model: userModel, as: "user", attributes: ["id", "name", "email"] }
         });
-        if (perfil) res.json(perfil);
-        else res.status(404).json({message: "Perfil no encontrado"});
     }
     catch(error){
         console.log(error);
@@ -31,13 +29,6 @@ export const getPerfilById = async (req, res) => {
 export const createPerfil = async (req, res) => {
     try{
         const { name, username } = req.body;
-        if (!name || !username){
-            return res.status(400).json({message: "Debe completar los campos nombre y username"});
-        }
-        const existe = await perfilModel.findOne({ where: { username } });
-        if (existe){
-            return res.status(400).json({message: "El username ya esta en uso"});
-        }
         const newPerfil = await perfilModel.create({ name, username });
         res.status(201).json({message: "Perfil creado!", perfil: newPerfil});
     }
