@@ -77,12 +77,14 @@ export const updateUser = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
     try{
-        const deleted = await userModel.destroy({where: { id: req.params.id}});
-       //validacion
-       if (deleted) res.json({message: "User eliminado!"});
-       else res.status(404).json({message: "User no encontrado"});
+        const existente = await userModel.findByPk(id);
+        if (!existente){
+            return res.status(404).json({message: "No se encuentra el usuario con ese id"});
+        }
+        await existente.destroy();
+        return res.status(200).json({message: "Usuario eliminado!"});
     }
     catch(error){
-        res.status(500).json({error: error.message});
+        res.status(500).json({message: "Error interno del servidor :c"});
     }
 };
