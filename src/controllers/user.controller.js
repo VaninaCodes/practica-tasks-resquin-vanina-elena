@@ -1,6 +1,7 @@
 import { userModel } from "../models/user.model.js";
 import { taskModel } from "../models/task.model.js";
 import { perfilModel } from "../models/perfil.model.js";
+import { matchedData } from "express-validator";
 
 export const getAllUsers = async (req, res) => {
     try{
@@ -40,13 +41,9 @@ export const getUserById = async (req, res) => {
 
 export const createUser = async (req, res) => {
     try{
-        const { name, email, password, perfil_id } = req.body;
-        const newUser = await userModel.create({
-            name,
-            email,
-            password,
-            perfil_id 
-        });
+        // const { name, email, password, perfil_id } = req.body;
+        const validatedData = matchedData(req);
+        const newUser = await userModel.create(validatedData);
 
         return res.status(201).json({message: "User creado!", user:newUser});
     }
@@ -58,17 +55,13 @@ export const createUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try{
-        const updated = await userModel.update(req.body, {
-            where: { id: req.params.id},
-        });
-        //validaciones
-        if (updated){
-            const updateUser = await userModel.findByPk(req.params.id);
-            res.json(updateUser);
-        }
-        else{
+        const validatedDataBody = matchedData(req, {locations:["body"]});
+        const {id} = matchedData(req, {locations: ["params"]});
+        const existente = await userModel.findByPk(id);
+        if(!existente){
             res.status(404).json({message: "User no encontrado"});
         }
+        await existente.update(validatedDataBody);
     }
     catch(error){
         res.status(500).json({error: error.message});
