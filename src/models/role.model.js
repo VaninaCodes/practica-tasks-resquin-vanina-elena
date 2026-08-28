@@ -8,5 +8,5 @@ export const roleModel = sequelize.define(
             type: DataTypes.STRING(100),
             allowNull: false,
         },
-    }
-)
+    },
+);
