@@ -1,6 +1,6 @@
 import {body, param} from "express-validator";
-import {taskModel} from "..models/task.model.js";
-import {userModel} from "../models/user.model.js";
+import {taskModel} from "../../models/task.model.js";
+import {userModel} from "../../models/user.model.js";
 
 export const taskIdValidation = [
     param("id")

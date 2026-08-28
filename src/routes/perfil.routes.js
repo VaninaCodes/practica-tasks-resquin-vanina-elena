@@ -12,7 +12,7 @@ import{
     createPerfilValidation,
     updatePerfilValidation,
 } from "../middlewares/validations/perfil.validation.js";
-import { validate } from "../middlewares/validation.middleware.js";
+import { validate } from "../middlewares/validate.js";
 export const perfilRouter = Router();
 
 perfilRouter.get("/", getAllPerfiles);

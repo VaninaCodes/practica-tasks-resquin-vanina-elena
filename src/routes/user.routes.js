@@ -12,7 +12,7 @@ import{
     createUserValidation,
     updateUserValidation,
 } from "../middlewares/validations/user.validation.js";
-import { validate } from "../middlewares/validation.middleware.js";
+import { validate } from "../middlewares/validate.js";
 
 export const userRouter = Router();
 
