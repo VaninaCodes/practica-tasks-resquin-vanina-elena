@@ -30,8 +30,10 @@ export const getRoleById = async (req, res) => {
 
 export const createRole = async (req, res) => {
     try{
-        const { rolename } = req.body;
-        const newRole = await roleModel.create({ rolename });
+        // const { rolename } = req.body;
+        // const newRole = await roleModel.create({ rolename });
+        const validatedData = matchedData(req);
+        const newRole = await roleModel.create(validatedData);
         res.status(201).json({message: "Rol creado!", role: newRole});
     }
     catch(error){
@@ -42,13 +44,20 @@ export const createRole = async (req, res) => {
 
 export const updateRole = async (req, res) => {
     try{
-        const existente = await roleModel.findByPk(req.params.id);
-        if (!existente){
-            return res.status(404).json({message: "Rol no encontrado"});
-        }
-        await roleModel.update(req.body, { where: { id: req.params.id } });
-        const updated = await roleModel.findByPk(req.params.id);
-        res.json(updated);
+        // const existente = await roleModel.findByPk(req.params.id);
+        // if (!existente){
+        //     return res.status(404).json({message: "Rol no encontrado"});
+        // }
+        // await roleModel.update(req.body, { where: { id: req.params.id } });
+        // const updated = await roleModel.findByPk(req.params.id);
+        // res.json(updated);
+        const validatedDataBody = matchedData(req, {locations:["body"]});
+        const {id} = matchedData(req, {locations: ["params"]});
+        const existente = await roleModel.findByPk(id);
+            if(!existente){
+                res.status(404).json({message: "Rol no encontrado"});
+            }
+        await existente.update(validatedDataBody);
     }
     catch(error){
         res.status(500).json({error: error.message});

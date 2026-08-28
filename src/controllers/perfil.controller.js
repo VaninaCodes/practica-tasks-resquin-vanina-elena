@@ -28,8 +28,10 @@ export const getPerfilById = async (req, res) => {
 
 export const createPerfil = async (req, res) => {
     try{
-        const { name, username } = req.body;
-        const newPerfil = await perfilModel.create({ name, username });
+        // const { name, username } = req.body;
+        // const newPerfil = await perfilModel.create({ name, username });
+        const validatedData = matchedData(req);
+        const newPerfil = await perfilModel.create(validatedData);
         res.status(201).json({message: "Perfil creado!", perfil: newPerfil});
     }
     catch(error){
@@ -40,13 +42,20 @@ export const createPerfil = async (req, res) => {
 
 export const updatePerfil = async (req, res) => {
     try{
-        const existente = await perfilModel.findByPk(req.params.id);
-        if (!existente){
-            return res.status(404).json({message: "Perfil no encontrado"});
-        }
-        await perfilModel.update(req.body, { where: { id: req.params.id } });
-        const updated = await perfilModel.findByPk(req.params.id);
-        res.json(updated);
+        // const existente = await perfilModel.findByPk(req.params.id);
+        // if (!existente){
+        //     return res.status(404).json({message: "Perfil no encontrado"});
+        // }
+        // await perfilModel.update(req.body, { where: { id: req.params.id } });
+        // const updated = await perfilModel.findByPk(req.params.id);
+        // res.json(updated);
+        const validatedDataBody = matchedData(req, {locations:["body"]});
+        const {id} = matchedData(req, {locations: ["params"]});
+        const existente = await perfilModel.findByPk(id);
+            if(!existente){
+                res.status(404).json({message: "Perfil no encontrado"});
+            }
+                await existente.update(validatedDataBody);
     }
     catch(error){
         res.status(500).json({error: error.message});

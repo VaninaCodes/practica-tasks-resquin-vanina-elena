@@ -67,14 +67,16 @@ export const getTaskById = async (req, res) => {
 
 export const createTask = async (req, res) => {
     try{
-        const { title, description, user_id } = req.body;
-        const newTask = await taskModel.create({
-            title,
-            description,
-            user_id,
-        });
+        // const { title, description, user_id } = req.body;
+        // const newTask = await taskModel.create({
+        //     title,
+        //     description,
+        //     user_id,
+        // });
+        const validatedData = matchedData(req);
+        const newTask = await taskModel.create(validatedData);
 
-        res.status(201).json({message: "Tarea creada!", task: newTask});
+        return res.status(201).json({message: "Tarea creada!", task: newTask});
     }
     catch(error){
         console.log(error);
@@ -84,17 +86,13 @@ export const createTask = async (req, res) => {
 
 export const updateTask = async (req, res) => {
     try{
-        const updated = await taskModel.update(req.body, {
-            where: { id: req.params.id},
-        });
-        //validaciones
-        if (updated){
-            const updateTask = await taskModel.findByPk(req.params.id);
-            res.json(updateTask);
-        }
-        else{
-            res.status(404).json({message: "Tarea no encontrado"});
-        }
+        const validatedDataBody = matchedData(req, {locations:["body"]});
+        const {id} = matchedData(req, {locations: ["params"]});
+        const existente = await taskModel.findByPk(id);
+            if(!existente){
+                res.status(404).json({message: "Tarea no encontrado"});
+            }
+        await existente.update(validatedDataBody);
     }
     catch(error){
         res.status(500).json({error: error.message});
