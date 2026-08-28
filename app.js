@@ -4,7 +4,7 @@ import { userRouter } from "./src/routes/user.routes.js";
 import { taskRouter } from "./src/routes/task.routes.js";
 import { perfilRouter } from "./src/routes/perfil.routes.js";
 import { roleRouter } from "./src/routes/role.routes.js";
-
+import "./src/models/user_role.model.js";
 
 const app = express();
 const PORT = 3001;

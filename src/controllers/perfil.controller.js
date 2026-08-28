@@ -1,5 +1,6 @@
 import { perfilModel } from "../models/perfil.model.js";
 import { userModel } from "../models/user.model.js";
+import { matchedData } from "express-validator";
 
 export const getAllPerfiles = async (req, res) => {
     try{
@@ -19,6 +20,7 @@ export const getPerfilById = async (req, res) => {
         const perfil = await perfilModel.findByPk(req.params.id, {
             include: { model: userModel, as: "user", attributes: ["id", "name", "email"] }
         });
+        return res.status(200).json(perfil);
     }
     catch(error){
         console.log(error);
@@ -30,7 +32,7 @@ export const createPerfil = async (req, res) => {
     try{
         // const { name, username } = req.body;
         // const newPerfil = await perfilModel.create({ name, username });
-        const validatedData = matchedData(req);
+        const validatedData = matchedData(req.body);
         const newPerfil = await perfilModel.create(validatedData);
         res.status(201).json({message: "Perfil creado!", perfil: newPerfil});
     }

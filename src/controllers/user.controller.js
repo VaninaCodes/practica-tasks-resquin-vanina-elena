@@ -5,7 +5,7 @@ import { matchedData } from "express-validator";
 
 export const getAllUsers = async (req, res) => {
     try{
-        const user = await userModel.findAll({
+        const users = await userModel.findAll({
             include: { 
                 model: taskModel, 
                 as: "tasks", 
@@ -13,7 +13,7 @@ export const getAllUsers = async (req, res) => {
             }
         });
 
-        return res.status(200).json(user);
+        return res.status(200).json(users);
     }
     catch(error){
         console.log(error);

@@ -1,5 +1,6 @@
 import { roleModel } from "../models/role.model.js";
 import { userModel } from "../models/user.model.js";
+import { matchedData } from "express-validator";
 
 export const getAllRoles = async (req, res) => {
     try{
@@ -32,7 +33,7 @@ export const createRole = async (req, res) => {
     try{
         // const { rolename } = req.body;
         // const newRole = await roleModel.create({ rolename });
-        const validatedData = matchedData(req);
+        const validatedData = matchedData(req.body);
         const newRole = await roleModel.create(validatedData);
         res.status(201).json({message: "Rol creado!", role: newRole});
     }

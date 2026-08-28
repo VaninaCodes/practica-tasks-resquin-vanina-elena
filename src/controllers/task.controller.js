@@ -1,10 +1,11 @@
 import { perfilModel } from "../models/perfil.model.js";
 import { taskModel } from "../models/task.model.js";
-import { userModel } from "../models/user.model.js";    
+import { userModel } from "../models/user.model.js";  
+import { matchedData } from "express-validator";  
 
 export const getAllTask = async (req, res) => {
     try{
-        const task = await taskModel.findAll({
+        const tasks = await taskModel.findAll({
             attributes: {
                 exclude: ["user_id"],
             },
@@ -25,7 +26,7 @@ export const getAllTask = async (req, res) => {
              ]
         });
 
-        return res.status(200).json(task);
+        return res.status(200).json(tasks);
     }
     catch(error){
         console.log(error);
@@ -73,7 +74,7 @@ export const createTask = async (req, res) => {
         //     description,
         //     user_id,
         // });
-        const validatedData = matchedData(req);
+        const validatedData = matchedData(req.body);
         const newTask = await taskModel.create(validatedData);
 
         return res.status(201).json({message: "Tarea creada!", task: newTask});
