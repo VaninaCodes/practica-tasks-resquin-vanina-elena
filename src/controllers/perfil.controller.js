@@ -54,12 +54,23 @@ export const updatePerfil = async (req, res) => {
 };
 
 export const deletePerfil = async (req, res) => {
+    // try{
+    //     const deleted = await perfilModel.destroy({ where: { id: req.params.id } });
+    //     if (deleted) res.json({message: "Perfil eliminado!"});
+    //     else res.status(404).json({message: "Perfil no encontrado"});
+    // }
+    // catch(error){
+    //     res.status(500).json({error: error.message});
+    // }
     try{
-        const deleted = await perfilModel.destroy({ where: { id: req.params.id } });
-        if (deleted) res.json({message: "Perfil eliminado!"});
-        else res.status(404).json({message: "Perfil no encontrado"});
+        const existente = await perfilModel.findByPk(id);
+        if (!existente){
+            return res.status(404).json({message: "No se encuentra el perfil con ese id"});
+        }
+        await existente.destroy();
+        return res.status(200).json({message: "Perfil eliminado!"});
     }
     catch(error){
-        res.status(500).json({error: error.message});
+        res.status(500).json({message: "Error interno del servidor :c"});
     }
 };

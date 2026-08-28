@@ -102,13 +102,24 @@ export const updateTask = async (req, res) => {
 };
 
 export const deleteTask = async (req, res) => {
+    // try{
+    //     const deleted = await taskModel.destroy({where: { id: req.params.id}});
+    //    //validacion
+    //    if (deleted) res.json({message: "Tarea eliminada!"});
+    //    else res.status(404).json({message: "Tarea no encontrada"});
+    // }
+    // catch(error){
+    //     res.status(500).json({error: error.message});
+    // }
     try{
-        const deleted = await taskModel.destroy({where: { id: req.params.id}});
-       //validacion
-       if (deleted) res.json({message: "Tarea eliminada!"});
-       else res.status(404).json({message: "Tarea no encontrada"});
+        const existente = await taskModel.findByPk(id);
+        if (!existente){
+            return res.status(404).json({message: "No se encuentra la tarea con ese id"});
+        }
+        await existente.destroy();
+        return res.status(200).json({message: "Tarea eliminado!"});
     }
     catch(error){
-        res.status(500).json({error: error.message});
+        res.status(500).json({message: "Error interno del servidor :c"});
     }
 };

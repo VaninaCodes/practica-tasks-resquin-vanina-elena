@@ -56,12 +56,23 @@ export const updateRole = async (req, res) => {
 };
 
 export const deleteRole = async (req, res) => {
+    // try{
+    //     const deleted = await roleModel.destroy({ where: { id: req.params.id } });
+    //     if (deleted) res.json({message: "Rol eliminado!"});
+    //     else res.status(404).json({message: "Rol no encontrado"});
+    // }
+    // catch(error){
+    //     res.status(500).json({error: error.message});
+    // }
     try{
-        const deleted = await roleModel.destroy({ where: { id: req.params.id } });
-        if (deleted) res.json({message: "Rol eliminado!"});
-        else res.status(404).json({message: "Rol no encontrado"});
+        const existente = await roleModel.findByPk(id);
+        if (!existente){
+            return res.status(404).json({message: "No se encuentra el rol con ese id"});
+        }
+        await existente.destroy();
+        return res.status(200).json({message: "Rol eliminado!"});
     }
     catch(error){
-        res.status(500).json({error: error.message});
+        res.status(500).json({message: "Error interno del servidor :c"});
     }
 };
